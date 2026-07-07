@@ -1,0 +1,73 @@
+# --- VCS ---
+.git
+.gitignore
+.github
+.gitlab-ci.yml
+
+# --- Python build artifacts ---
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+.eggs
+build
+dist
+.pytest_cache
+.tox
+.mypy_cache
+.ruff_cache
+
+# --- Virtualenvs ---
+.venv
+venv
+env
+
+# --- IDE / OS ---
+.vscode
+.idea
+*.swp
+.DS_Store
+Thumbs.db
+*~
+
+# --- Secrets / local config ---
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.crt
+secrets/
+
+# --- Local data / runtime ---
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/llm_sessions/
+caddy/data/
+caddy/config/
+certs/*
+!certs/.gitkeep
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Test / dev (not needed in prod image) ---
+tests/
+*_test.py
+test_*.py
+
+# --- Documentation (keep README only in repo, not in image) ---
+*.md
+!README.md
+
+# --- Backup files ---
+*.bak
+*.bak.*
+*.orig
+
+# --- Editor-generated ---
+.dockerignore

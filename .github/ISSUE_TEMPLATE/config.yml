@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Questions & ideas (Discussions)
+    url: https://github.com/infinitocloud/nemo-rt-community/discussions
+    about: How-to questions, ideas, and show-and-tell go here — not in Issues.
+  - name: 🏢 Managed / multi-tenant / commercial support
+    url: https://calendar.app.google/nRVbjSTkvSrBzekZ7
+    about: Want it managed, multi-tenant, or with an SLA? Book a 30-min call.

@@ -1,0 +1,32 @@
+your-pod.example.com {
+    route {
+        @prtg path /PRTG /PRTG/
+        handle @prtg {
+            root * /srv
+            rewrite * /nvidia.txt
+            header Content-Type "text/plain; charset=utf-8"
+            file_server
+        }
+
+        handle {
+            reverse_proxy web:8000 {
+                header_up X-Real-IP {remote_host}
+                header_up X-Forwarded-For {remote_host}
+            }
+        }
+    }
+
+    handle_errors {
+        @maintenance expression `{err.status_code} in [502, 503]`
+        handle @maintenance {
+            header Content-Type "text/html; charset=utf-8"
+            header Cache-Control "no-store"
+            header X-Loading "true"
+            root * /srv
+            rewrite * /loading.html
+            file_server {
+                status 200
+            }
+        }
+    }
+}

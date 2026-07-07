@@ -1,0 +1,47 @@
+# Nemo-RT — Asterisk/SIP bridge configuration
+# ---------------------------------------------------------------------------
+# Copy this file to `config.conf` and fill in your values.
+# `config.conf` is gitignored — never commit real keys or passwords.
+#     cp config.conf.example config.conf
+
+# --- Realtime endpoint -------------------------------------------------------
+# The whole point: aim the bridge at YOUR box. Same bridge, same code — only the
+# URL changes between your GPU and OpenAI's cloud.
+#   Nemo-RT on the same box .......... ws://localhost:8000/v1/realtime   (default)
+#   Nemo-RT on another host .......... ws://<box-ip>:8000/v1/realtime
+#     (or SSH-forward it: ssh -L 8000:localhost:8000 user@box  ->  keep localhost)
+#   OpenAI cloud (metered) ........... wss://api.openai.com/v1/realtime?model=gpt-realtime
+REALTIME_URL=ws://localhost:8000/v1/realtime
+
+# API key. For Nemo-RT: the key `setup.sh` printed on your box. For OpenAI: your sk-... key.
+OPENAI_API_KEY=sk-your-nemo-or-openai-key
+
+# --- Asterisk ARI ------------------------------------------------------------
+ARI_URL=http://127.0.0.1:8088
+ARI_USERNAME=asterisk
+ARI_PASSWORD=change-me
+
+# --- Behaviour ---------------------------------------------------------------
+# Whisper transcription language for the caller's speech (log/display only):
+#   es = Spanish · en = English · leave empty for auto-detect (bilingual).
+TRANSCRIPTION_LANGUAGE=en
+
+# Voice name sent on session.update. OpenAI uses it; Nemo-RT ignores it and uses
+# its own bilingual voice.
+OPENAI_VOICE=alloy
+
+# First-turn behaviour + the agent's persona.
+SYSTEM_PROMPT="You are a helpful voice assistant. Greet the caller, say your name, and ask how you can help. Answer in the caller's language."
+INITIAL_MESSAGE=Hola
+
+# --- Tuning ------------------------------------------------------------------
+MAX_CONCURRENT_CALLS=10
+LOG_LEVEL=info
+SILENCE_PADDING_MS=100
+VAD_THRESHOLD=0.6
+VAD_PREFIX_PADDING_MS=200
+VAD_SILENCE_DURATION_MS=600
+CALL_DURATION_LIMIT_SECONDS=300     # 0 = no limit
+
+# Only used if REALTIME_URL is left unset AND you point at OpenAI:
+# REALTIME_MODEL=gpt-realtime

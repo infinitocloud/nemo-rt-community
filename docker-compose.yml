@@ -1,0 +1,95 @@
+x-common: &common
+  build: .
+  ipc: host
+  ulimits:
+    memlock: -1
+    stack: 67108864
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
+  volumes:
+    - ./:/app
+    - ./audio:/app/audio
+    # Config persistence (UI/Settings overrides -> data/config.json)
+    - ./data:/app/data
+    # Caches persistentes
+    - ./cache/huggingface:/root/.cache/huggingface
+    - ./cache/nemo:/root/.cache/torch/NeMo
+    - ./cache/torch:/root/.cache/torch
+  environment:
+    - HF_TOKEN=${HF_TOKEN}
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  working_dir: /app
+
+services:
+  vllm:
+    image: vllm/vllm-openai:v0.20.1
+    ipc: host
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    volumes:
+      - ./cache/huggingface:/root/.cache/huggingface
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+      - VLLM_LOGGING_LEVEL=${VLLM_LOGGING_LEVEL:-INFO}
+    command: >
+      --model ${LLM_MODEL:-Qwen/Qwen3-8B-FP8}
+      --host 0.0.0.0
+      --port 8000
+      --tensor-parallel-size 1
+      --max-model-len ${VLLM_MAX_MODEL_LEN:-32768}
+      --gpu-memory-utilization ${VLLM_GPU_MEM_FRAC:-0.6}
+    expose:
+      - "8000"
+    restart: always
+
+  web:
+    <<: *common
+    depends_on:
+      - vllm
+    restart: always
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+      - API_KEY=${API_KEY:-}
+      - MAX_CONNECTIONS=${MAX_CONNECTIONS:-20}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-}
+      - LLM_BASE_URL=${LLM_BASE_URL:-http://vllm:8000/v1}
+      - LLM_MODEL=${LLM_MODEL:-Qwen/Qwen3-8B-FP8}
+      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-256}
+      - LLM_TOP_P=${LLM_TOP_P:-0.8}
+      - LLM_FREQ_PENALTY=${LLM_FREQ_PENALTY:-1.5}
+      - CONFIG_FILE=${CONFIG_FILE:-data/config.json}
+    expose:
+      - "8000"
+    command: python -u web_app.py
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - /home/PRTG/www/nvidia.txt:/srv/nvidia.txt:ro
+      - ./static/loading.html:/srv/loading.html:ro
+      - ./certs:/certs:ro
+      - ./caddy/data:/data
+      - ./caddy/config:/config
+    depends_on:
+      - web
+    restart: always

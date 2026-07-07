@@ -1,0 +1,53 @@
+# Environment
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Output
+output/
+
+# Model cache (local HuggingFace)
+cache/
+
+# Settings (may contain custom prompts)
+settings.json
+
+# IDE
+.vscode/
+.idea/
+
+# Database (runtime data, tenant-specific)
+data/
+db/main.db
+*.db
+*.db-shm
+*.db-wal
+
+# RAG documents and indices (tenant data, can be large)
+rag/documents/
+rag/indices/
+
+# Audio test files
+*.wav
+audio/
+
+# Test PDFs
+*.pdf
+
+# Caddy runtime data
+caddy/
+
+# Test results
+tests/tests2/results/
+
+# Claude Code
+.claude/
+
+# OS
+.DS_Store
+config.json
+*.log
+config.conf
