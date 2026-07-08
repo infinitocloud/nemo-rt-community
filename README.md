@@ -85,11 +85,14 @@ Lead with a **desktop**, not a data center:
 
 | Box | Approx. cost | Concurrent calls* |
 |---|---|---|
+| **RTX 4090** (consumer, 24GB) | ~$1.6K | dev / small setups ✅ |
 | **NVIDIA DGX Spark** (desktop, 128GB unified) | ~$4K | ~20 |
 | **H100 / H200** (data-center card) | ~$30K | ~75 |
 
 <sub>*Sub-second TTFA. With ~10:1 overbooking a single Spark provisions ~200 lines.
-Scales linearly with more GPUs.</sub>
+Scales linearly with more GPUs. The **RTX 4090 is validated** (full stack fits in ~21.5/24 GB,
+live voice TTFA 0.17–0.59 s) — great for dev and small deployments; tight VRAM caps concurrent
+volume, so the Spark is the better production desktop. See **[HARDWARE.md](HARDWARE.md)**.</sub>
 
 <sub>Needs an **FP8-capable** GPU (Ada / Hopper / Blackwell — not Ampere). Full
 compatibility + tested GPUs → **[HARDWARE.md](HARDWARE.md)** (community-built — [add
