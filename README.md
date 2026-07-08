@@ -206,7 +206,8 @@ bilingual and language-adaptive; override it per-session from the Realtime
 
 **Requirements (short version):** an FP8-capable NVIDIA GPU (Blackwell / Hopper /
 Ada) — the default **Qwen3-8B-FP8** needs only **~12GB VRAM**, so it runs on a
-modest GPU (including a DGX Spark) — Docker, and **~20GB disk**. `setup.sh`
+modest GPU (including a DGX Spark) — Docker, and **~40GB disk** (~24GB first-run
+download: ~14GB image + ~10GB model). `setup.sh`
 handles the rest.
 
 📖 **Configuration:** every env var is documented in [`.env.example`](.env.example);

@@ -17,7 +17,8 @@
 #      toolkit). Validated on 610.43.02. Step 1 installs the latest cuda-drivers,
 #      which always satisfies this — the minimum only matters if you keep an OLD
 #      preinstalled driver (then ensure >= 580, or let Step 1 upgrade it).
-#    - Disk: ~20GB free (image ~7GB + model cache ~10GB).
+#    - Disk: ~40GB free (image ~14GB compressed / ~30GB unpacked + model cache
+#      ~10GB). First-run download is ~24GB total; later restarts reuse the caches.
 #
 #  Usage:
 #      chmod +x setup.sh && ./setup.sh
