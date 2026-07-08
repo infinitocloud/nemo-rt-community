@@ -37,7 +37,7 @@ ask()  { local v; read -rp "$(echo -e "${Y}?${N} $1")" v; echo "$v"; }
 
 # --- config (override via env: IMAGE=... ./setup.sh) -------------------------
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-IMAGE="${IMAGE:-ghcr.io/infinitocloud/nemo-rt-pro:2.0}"   # runtime deps baked (PyTorch/vLLM/NeMo); the app code is mounted from this repo
+IMAGE="${IMAGE:-ghcr.io/infinitocloud/nemo-rt-community:2.0}"   # runtime deps baked (PyTorch/vLLM/NeMo); the app code is mounted from this repo
 CONTAINER="${CONTAINER:-nemo-rt-community}"
 HF_CACHE="${HF_CACHE:-$HOME/.cache/nemo-rt/hf}"           # persists the LLM weights between restarts (~10GB)
 ROOT_CACHE="${ROOT_CACHE:-$HOME/.cache/nemo-rt/root}"     # persists NeMo models + vLLM compile cache -> ~30s restarts
@@ -145,7 +145,7 @@ if sudo docker image inspect "$IMAGE" >/dev/null 2>&1; then
 elif [ "$ARCH" = "aarch64" ]; then
   # ARM (GH200 / DGX Spark): pull the prebuilt arm64 image; if unavailable, build it
   # natively from the Dockerfile (one-time, slow) — self-contained single-python build.
-  ARM_IMAGE="ghcr.io/infinitocloud/nemo-rt-pro:community-arm64"
+  ARM_IMAGE="ghcr.io/infinitocloud/nemo-rt-community:2.0-arm64"
   if sudo docker pull "$ARM_IMAGE" 2>/dev/null; then
     sudo docker tag "$ARM_IMAGE" "$IMAGE"; ok "pulled prebuilt arm64 image"
   else
