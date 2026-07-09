@@ -71,7 +71,10 @@ services:
       - LLM_MODEL=${LLM_MODEL:-Qwen/Qwen3-8B-FP8}
       - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-256}
       - LLM_TOP_P=${LLM_TOP_P:-0.8}
-      - LLM_FREQ_PENALTY=${LLM_FREQ_PENALTY:-1.5}
+      # Keep 0.0. On Blackwell (DGX Spark / GB10, RTX PRO 6000, RTX 5090) a
+      # frequency_penalty > 0 crashes vLLM's sampler (apply_penalties ->
+      # scatter_add_) and corrupts the CUDA context. See CONTRIBUTING.md.
+      - LLM_FREQ_PENALTY=${LLM_FREQ_PENALTY:-0.0}
       - CONFIG_FILE=${CONFIG_FILE:-data/config.json}
     expose:
       - "8000"
