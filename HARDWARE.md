@@ -24,7 +24,7 @@ Legend: ✅ validated · 🟡 reported working · ❓ untested · ❌ won't run 
 |---|---|---|:--:|---|
 | **H100** (SXM/PCIe) | Hopper | 80 GB | ✅ | Full e2e: web UI + live SIP call + barge-in. TTFA ~0.12–0.16 s |
 | **GH200** | Hopper (ARM64) | 96 GB | ✅ | Runs the arm64 build |
-| **DGX Spark** | Blackwell (ARM) | 128 GB unified | ❓ | The target desktop box — reports wanted |
+| **DGX Spark** | Blackwell (ARM) | 128 GB unified | ✅ | The target desktop box. Measured: **~20 concurrent calls**, sub-second TTFA. ⚠️ Clean install not exercised: `setup.sh` has **not** been run on a fresh Spark OS (the unit tested was already provisioned) — reports welcome |
 | **RTX PRO 6000** | Blackwell | 96 GB | ❓ | FP8-capable — reports wanted |
 | **RTX 4090** | Ada | 24 GB | ✅ | Validated 2026-07-08: full stack fits in ~21.5/24 GB. Live voice TTFA **0.17–0.59 s**. LLM 52 tok/s single, 32 concurrent OK. Tight VRAM → dev / small deployments ([details](#measured--rtx-4090-2026-07-08)) |
 | **L40 / L40S / L4** | Ada | 48 / 48 / 24 GB | ❓ | FP8-capable — reports wanted |
